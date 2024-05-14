@@ -1,0 +1,71 @@
+name: hisat2-alignment
+description: Do HiSAT2 alignment for single bulk RNA-seq sample
+author: seqyuan
+
+# Define your inputs here.
+inputs:
+  strand_specific:
+    description: strand specific library
+    required: false
+    default: false
+
+  seq_type:
+    description: data sequence type, paired end or single end, PE or SE
+    required: false
+    default: PE
+
+  genome_index:
+    description: genome hisat2 index prefix
+    required: true
+
+  gtf:
+    description: genome gtf format gene annotation file
+    required: true
+
+  cpu:
+    description: thread number 
+    required: false
+    default: 8
+
+  sample:
+    description: sample name
+    required: false
+    default: sample
+
+  fq1:
+    description: R1 fastq or fastq.gz
+    required: true
+
+  fq2:
+    description: R2 fastq or fastq.gz
+    required: false
+    default: ''
+
+  outdir:
+    description: output dir
+    required: false
+    default: ./
+
+# Define your outputs here.
+outputs:
+  outfile: 
+    description: alignment bam
+    value: ${{ inputs.outdir }}/${{ inputs.sample }}.bam
+
+  outfile: 
+    description: hista2 alignment stderr
+    value: ${{ inputs.outdir }}/${{ inputs.sample }}.hisat2.stderr
+
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    strand_specific: ${{ inputs.strand_specific }}
+    seq_type: ${{ inputs.seq_type }}
+    genome_index: ${{ inputs.genome_index }}
+    gtf: ${{ inputs.gtf }}
+    cpu: ${{ inputs.cpu }}
+    sample: ${{ inputs.sample }}
+    fq1: ${{ inputs.fq1 }}
+    fq2: ${{ inputs.fq2 }}
+    outdir: ${{ inputs.outdir }}
