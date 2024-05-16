@@ -57,27 +57,24 @@ outputs:
     value: ${{ inputs.outdir }}/${{ inputs.sample }}.hisat2.stderr
 
 runs:
-  using: composite
-  env:
-    strand_specific: ${{ inputs.strand_specific }}
-    seq_type: ${{ inputs.seq_type }}
-    genome_index: ${{ inputs.genome_index }}
-    gtf: ${{ inputs.gtf }}
-    cpu: ${{ inputs.cpu }}
-    sample: ${{ inputs.sample }}
-    fq1: ${{ inputs.fq1 }}
-    fq2: ${{ inputs.fq2 }}
-    outdir: ${{ inputs.outdir }}
-
+  using: "composite"
   steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - shell: bash
-    - run: |
-      make -f ./Makefile sample=$sample strand_specific=$strand_specific \
-      seq_type=$seq_type genome_index=$genome_index gtf=$gtf \
-      cpu=$cpu fq1=$fq1 fq2=$fq2 outdir=$outdir \
-      Splicesite Alignment HTseq InsertSize FragSize
+    - name: align and count
+      shell: bash
+      env:
+        strand_specific: ${{ inputs.strand_specific }}
+        seq_type: ${{ inputs.seq_type }}
+        genome_index: ${{ inputs.genome_index }}
+        gtf: ${{ inputs.gtf }}
+        cpu: ${{ inputs.cpu }}
+        sample: ${{ inputs.sample }}
+        fq1: ${{ inputs.fq1 }}
+        fq2: ${{ inputs.fq2 }}
+        outdir: ${{ inputs.outdir }}
+      run: |
+        make -f ./Makefile sample=$sample strand_specific=$strand_specific \
+        seq_type=$seq_type genome_index=$genome_index gtf=$gtf \
+        cpu=$cpu fq1=$fq1 fq2=$fq2 outdir=$outdir \
+        Splicesite Alignment HTseq InsertSize FragSize
 
-      
+        
