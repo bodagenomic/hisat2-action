@@ -63,7 +63,9 @@ runs:
     #  with:
     #    fetch-depth: 0
     - name: Set GitHub Path
-      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+      run: |
+        echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+        cd $GITHUB_ACTION_PATH
       shell: bash
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
