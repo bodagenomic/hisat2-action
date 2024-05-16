@@ -62,7 +62,7 @@ runs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-        
+
     - name: align and count
       shell: bash
       env:
@@ -76,6 +76,7 @@ runs:
         fq2: ${{ inputs.fq2 }}
         outdir: ${{ inputs.outdir }}
       run: |
+        ls -l
         make -f ./Makefile sample=$sample strand_specific=$strand_specific \
         seq_type=$seq_type genome_index=$genome_index gtf=$gtf \
         cpu=$cpu fq1=$fq1 fq2=$fq2 outdir=$outdir \
