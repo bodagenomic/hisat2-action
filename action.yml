@@ -65,7 +65,6 @@ runs:
     - name: Set GitHub Path
       run: |
         echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-        cd $GITHUB_ACTION_PATH
       shell: bash
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
@@ -83,6 +82,7 @@ runs:
         fq2: ${{ inputs.fq2 }}
         outdir: ${{ inputs.outdir }}
       run: |
+        cd $GITHUB_ACTION_PATH
         ls -l ../*
         make -f ./Makefile sample=$sample strand_specific=$strand_specific \
         seq_type=$seq_type genome_index=$genome_index gtf=$gtf \
