@@ -34,14 +34,14 @@ Alignment:
 
 InsertSize:
         @echo -e $(sample) InsertSize start at [`date +"%Y-%m-%d %H:%M:%S"`]
-        perl gtf2bed.pl $(gtf) >$(outdir)/gtf.bed
+        perl ./gtf2bed.pl $(gtf) >$(outdir)/gtf.bed
         python3 $(inner_distance) -i $(outdir)/$(sample).bam -o $(outdir)/$(sample) -r $(outdir)/gtf.bed
         @echo -e $(sample) InsertSize end at [`date +"%Y-%m-%d %H:%M:%S"`]
 
 FragSize:
         if [ "$(wildcard $(outdir)/gtf.bed)" == "" ] ;\
         then \
-                perl /opt/gtf2bed.pl $(gtf) >$(outdir)/gtf.bed ;\
+                perl ./gtf2bed.pl $(gtf) >$(outdir)/gtf.bed ;\
         fi
         @echo -e $(sample) FragSize start at [`date +"%Y-%m-%d %H:%M:%S"`]
         python3 $(RNA_fragment_size) -i $(outdir)/$(sample).bam -r $(outdir)/gtf.bed >$(outdir)/$(sample).fragsize
