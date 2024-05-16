@@ -58,7 +58,6 @@ outputs:
 
 runs:
   using: composite
-  shell: bash
   env:
     strand_specific: ${{ inputs.strand_specific }}
     seq_type: ${{ inputs.seq_type }}
@@ -71,6 +70,10 @@ runs:
     outdir: ${{ inputs.outdir }}
 
   steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - shell: bash
     - run: |
       make -f ./Makefile sample=$sample strand_specific=$strand_specific \
       seq_type=$seq_type genome_index=$genome_index gtf=$gtf \
