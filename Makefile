@@ -6,9 +6,9 @@ else ifeq ($(strand_specific),no)
         strandness = 
 endif
 
-RNA_fragment_size=$(which RNA_fragment_size.py)
-inner_distance=$(which inner_distance.py)
-hisat2_extract_splice_sites=$(which hisat2_extract_splice_sites.py)
+RNA_fragment_size=$(shell which RNA_fragment_size.py)
+inner_distance=$(shell which inner_distance.py)
+hisat2_extract_splice_sites=$(shell which hisat2_extract_splice_sites.py)
 
 .PHONY:Alignment
 
