@@ -14,6 +14,7 @@ hisat2_extract_splice_sites=$(shell which hisat2_extract_splice_sites.py)
 
 Splicesite:
 	@echo -e $(sample) extract_splice_sites start at [`date +"%Y-%m-%d %H:%M:%S"`]
+	id
 	mkdir -p $(outdir)
 	python3 $(hisat2_extract_splice_sites) $(gtf) >$(outdir)/splicesites.txt
 	@echo -e $(sample) extract_splice_sites end at [`date +"%Y-%m-%d %H:%M:%S"`]
