@@ -6,9 +6,9 @@ else ifeq ($(strand_specific),no)
         strandness = 
 endif
 
-RNA_fragment_size := `which RNA_fragment_size.py`
-inner_distance := `which inner_distance.py`
-hisat2_extract_splice_sites := `which hisat2_extract_splice_sites.py`
+RNA_fragment_size := $(which RNA_fragment_size.py)
+inner_distance := $(which inner_distance.py)
+hisat2_extract_splice_sites := $(which hisat2_extract_splice_sites.py)
 
 .PHONY:Alignment
 
@@ -22,7 +22,7 @@ Alignment:
 	mkdir -p $(outdir)/tmp
 	if [ "$(seq_type)" = "PE" ] ;\
     then \
-		hisat2 -x $(genome_index) -p $(cpu) --dta $(strandness) --known-splicesite-infile $(outdir)/splicesites.txt -temp-directory $(outdir)/tmp -1 $(fq1) -2 $(fq2) --un $(outdir) 2> $(outdir)/$(sample).hisat2.stderr| samtools sort -@ $(cpu) -m 768M > $(outdir)/$(sample).bam ;\
+		hisat2 -x $(genome_index) -p $(cpu) --dta $(strandness) --known-splicesite-infile $(outdir)/splicesites.txt -1 $(fq1) -2 $(fq2) --un $(outdir) 2> $(outdir)/$(sample).hisat2.stderr| samtools sort -@ $(cpu) -m 768M > $(outdir)/$(sample).bam ;\
 	else \
 		hisat2 -x $(genome_index) -p $(cpu) --dta $(strandness) -U $(fq1) --known-splicesite-infile $(known_splicesites) -temp-directory $(outdir)/tmp 2> $(outdir)/$(sample).hisat2.stderr| samtools sort -@ $(cpu) -m 768M > $(outdir)/$(sample).bam ; \
 	fi 
