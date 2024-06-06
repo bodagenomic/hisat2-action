@@ -14,14 +14,13 @@ hisat2_extract_splice_sites=$(shell which hisat2_extract_splice_sites.py)
 
 Splicesite:
 	@echo -e $(sample) extract_splice_sites start at [`date +"%Y-%m-%d %H:%M:%S"`]
-	id
-	mkdir -p $(outdir)
+	mkdir -p $(outdir)/tmp
 	python3 $(hisat2_extract_splice_sites) $(gtf) >$(outdir)/splicesites.txt
 	@echo -e $(sample) extract_splice_sites end at [`date +"%Y-%m-%d %H:%M:%S"`]
 
 Alignment:
 	@echo -e $(sample) hisat2 alignment start at [`date +"%Y-%m-%d %H:%M:%S"`]
-	mkdir -p $(outdir)/tmp
+	#mkdir -p $(outdir)/tmp
 	if [ "$(seq_type)" = "PE" ] ;\
     then \
 		hisat2 -x $(genome_index) -p $(cpu) --dta $(strandness) --known-splicesite-infile $(outdir)/splicesites.txt -1 $(fq1) -2 $(fq2) --un $(outdir) 2> $(outdir)/$(sample).hisat2.stderr| samtools sort -@ $(cpu) -m 768M > $(outdir)/$(sample).bam ;\
@@ -52,6 +51,6 @@ FragSize:
 
 HTseq:
 	@echo -e $(sample) htseq-count start at [`date +"%Y-%m-%d %H:%M:%S"`]
-	htseq-count -i gene_id -t exon -r pos -f bam -s no -a 10 -c $(outdir)/$(sample).htseq.count.tsv -q $(outdir)/$(sample).bam $(gtf)
+	htseq-count -i gene_id -t exon -r pos -f bam -s no -a 10 -c $(outdir)/$(sample).htseq.count.tsv -q $(outdir)/$(sample).bam $(gtf) >$(outdir)/$(sample).htseq.o 2>$(outdir)/$(sample).htseq.e
 	@echo -e $(sample) htseq-count end at [`date +"%Y-%m-%d %H:%M:%S"`]
 
